@@ -12,4 +12,5 @@ public interface PersonDao
     public List<Person> getPersonAll() throws DaoException;
     public Person getPersonById(int id) throws DaoException;
     public void delete(Person person) throws DaoException;
+    public void close() throws DaoException;
 }

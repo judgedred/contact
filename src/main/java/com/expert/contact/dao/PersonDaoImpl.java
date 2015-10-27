@@ -268,6 +268,43 @@ public class PersonDaoImpl implements PersonDao
         }
     }
 
+    @Override
+    public void close() throws DaoException
+    {
+        try
+        {
+            if(pstmtCreate != null)
+            {
+                pstmtCreate.close();
+            }
+            if(pstmtUpdate != null)
+            {
+                pstmtUpdate.close();
+            }
+            if(pstmtDelete != null)
+            {
+                pstmtDelete.close();
+            }
+            if(pstmtGetAll != null)
+            {
+                pstmtGetAll.close();
+            }
+            if(pstmtGetById != null)
+            {
+                pstmtGetById.close();
+            }
+            if(pstmtLastId != null)
+            {
+                pstmtLastId.close();
+            }
+            connection.close();
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }
+
     public PersonDaoImpl() throws DaoException
     {
         try

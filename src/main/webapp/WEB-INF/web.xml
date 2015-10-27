@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+    <!-- Your servlet definitions go here -->
+    <servlet>
+        <servlet-name>Main</servlet-name>
+        <servlet-class>com.expert.contact.web.PersonController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Main</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+   <!-- <servlet>
+        <servlet-name>ProcessServlet</servlet-name>
+        <servlet-class>com.web.ProcessServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ProcessServlet</servlet-name>
+        <url-pattern>/ProcessServlet/*</url-pattern>
+    </servlet-mapping>-->
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
+
+    <listener>
+        <listener-class>com.expert.contact.web.SessionListener</listener-class>
+    </listener>
+
+    <!--<filter>
+        <filter-name>charsetFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>charsetFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+        </jsp-property-group>
+    </jsp-config>-->
+
+</web-app>
