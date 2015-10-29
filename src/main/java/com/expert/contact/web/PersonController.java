@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 
 public class PersonController extends HttpServlet
 {
@@ -27,7 +28,6 @@ public class PersonController extends HttpServlet
         HttpSession session = request.getSession();
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
-        int uploadFinished = 0;
 
         if(url.equals("/main"))
         {
@@ -40,27 +40,44 @@ public class PersonController extends HttpServlet
             try
             {
                 PersonService personService = (PersonService) session.getAttribute("personService");
+                String uploadInProgress = (String)getServletContext().getAttribute("uploadInProgress");
                 boolean isMultipartContent = ServletFileUpload.isMultipartContent(request);
                 if (isMultipartContent)
                 {
-                    if(uploadFinished == 1)
+                    if(uploadInProgress == null)
                     {
 //                    out.println("You are trying to upload<br/>");
+                        boolean uploadSuccess = true;
+                        String csvSplit = request.getParameter("csv-split");
                         FileItemFactory factory = new DiskFileItemFactory();
                         ServletFileUpload upload = new ServletFileUpload(factory);
-                        uploadFinished = false;
+                        getServletContext().setAttribute("uploadInProgress", "uploadInProgress");
                         List<FileItem> fileItemList = upload.parseRequest(request);
                         if(fileItemList != null)
                         {
                             for(FileItem f : fileItemList)
                             {
-                                if(!f.isFormField())
+                                if(f.isFormField() && f.getFieldName().equals("csv-split"))
                                 {
-                                    personService.importPerson(f.getInputStream());
-                                    uploadFinished = true;
+                                    csvSplit = f.getString();
+                                }
+                                else if(!f.isFormField() && csvSplit != null)
+                                {
+                                    uploadSuccess = personService.importPerson(f.getInputStream(), csvSplit);
                                 }
                             }
                         }
+                        getServletContext().setAttribute("uploadInProgress", null);
+                        if(!uploadSuccess)
+                        {
+                            out.println("Ошибка. Проверьте файл. Возможно выбран неверный разделитель.");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        out.println("Идет загрузка файла. Попробуйте позже.");
+                        return;
                     }
                 }
                 /*else
@@ -73,6 +90,7 @@ public class PersonController extends HttpServlet
             catch(Exception e)
             {
                 e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
 
         }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PersonService
 {
-    public void importPerson(InputStream csvFileStream) throws DaoException, IOException;
+    public boolean importPerson(InputStream csvFileStream, String csvSplit) throws DaoException, IOException;
     public void update(Person person) throws DaoException;
     public List<Person> getPersonAll() throws DaoException;
     public List<Person> sortPerson(String sortValue) throws DaoException;
