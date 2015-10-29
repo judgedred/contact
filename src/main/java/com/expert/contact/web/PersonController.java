@@ -27,6 +27,7 @@ public class PersonController extends HttpServlet
         HttpSession session = request.getSession();
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
+        int uploadFinished = 0;
 
         if(url.equals("/main"))
         {
@@ -42,17 +43,22 @@ public class PersonController extends HttpServlet
                 boolean isMultipartContent = ServletFileUpload.isMultipartContent(request);
                 if (isMultipartContent)
                 {
-//                    out.println("You are trying to upload<br/>");
-                    FileItemFactory factory = new DiskFileItemFactory();
-                    ServletFileUpload upload = new ServletFileUpload(factory);
-                    List<FileItem> fileItemList = upload.parseRequest(request);
-                    if(fileItemList != null)
+                    if(uploadFinished == 1)
                     {
-                        for(FileItem f : fileItemList)
+//                    out.println("You are trying to upload<br/>");
+                        FileItemFactory factory = new DiskFileItemFactory();
+                        ServletFileUpload upload = new ServletFileUpload(factory);
+                        uploadFinished = false;
+                        List<FileItem> fileItemList = upload.parseRequest(request);
+                        if(fileItemList != null)
                         {
-                            if(!f.isFormField())
+                            for(FileItem f : fileItemList)
                             {
-                                personService.importPerson(f.getInputStream());
+                                if(!f.isFormField())
+                                {
+                                    personService.importPerson(f.getInputStream());
+                                    uploadFinished = true;
+                                }
                             }
                         }
                     }

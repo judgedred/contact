@@ -28,10 +28,10 @@ public class PersonServiceImpl implements PersonService
         this.importPath = importPath;
     }
 
-    @Override
+   /* @Override
     public void importPerson(InputStream csvFileStream) throws DaoException, IOException
     {
-        /*try
+        *//*try
         {
             this.setImportPath("d://java/practice/contact/contact.csv");
             String line = "";
@@ -48,7 +48,7 @@ public class PersonServiceImpl implements PersonService
                 person.setPhoneNumber(Long.parseLong(contact[4]));
                 personDao.create(person);
             }
-        }*/
+        }*//*
 
         try
         {
@@ -97,6 +97,28 @@ public class PersonServiceImpl implements PersonService
             }
         }
 
+    }*/
+
+    @Override
+    public void importPerson(InputStream csvFileStream) throws DaoException, IOException
+    {
+        try
+        {
+            BufferedInputStream in = new BufferedInputStream(csvFileStream);
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("d://1/test"));
+            byte[] buff = new byte[1000];
+            int i;
+            while((i = in.read(buff)) != -1)
+            {
+                out.write(buff, 0, i);
+            }
+            in.close();
+            out.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
