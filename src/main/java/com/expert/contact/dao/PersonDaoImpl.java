@@ -15,13 +15,18 @@ public class PersonDaoImpl implements PersonDao
     private PreparedStatement pstmtCreate = null;
     private PreparedStatement pstmtUpdate = null;
     private PreparedStatement pstmtGetAll = null;
+    private PreparedStatement pstmtGetAllPaging = null;
+    private PreparedStatement pstmtGetRecordsQuantity = null;
     private PreparedStatement pstmtLastId = null;
     private PreparedStatement pstmtGetById = null;
     private PreparedStatement pstmtDelete = null;
     private ResultSet rs = null;
+    private static Integer recordsQuantity;
     private static final String sqlCreate =	"Insert Into Person(person_name, person_surname, login, email, phone_number) Values(?, ?, ?, ?, ?)";
     private static final String sqlUpdate = "Update Person Set person_name = ?, person_surname = ?, login = ?, email = ?, phone_number = ? Where person_id = ?";
     private static final String sqlGetAll = "Select person_id, person_name, person_surname, login, email, phone_number From Person";
+    private static String sqlGetAllPaging = "Select SQL_CALC_FOUND_ROWS person_id, person_name, person_surname, login, email, phone_number From Person LIMIT ?, ?";
+    private static final String sqlGetRecordsQuantity = "Select FOUND_ROWS()";
     private static final String sqlLastId = "Select person_id, person_name, person_surname, login, email, phone_number From Person Where person_id = last_insert_id()";
     private static final String sqlGetById = "Select person_id, person_name, person_surname, login, email, phone_number From Person Where person_id = ?";
     private static final String sqlDelete = "Delete From Person Where person_id = ?";
@@ -75,6 +80,44 @@ public class PersonDaoImpl implements PersonDao
             else
             {
                 return pstmtGetAll;
+            }
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }
+
+    private PreparedStatement getPstmtGetAllPaging() throws DaoException
+    {
+        try
+        {
+            if(pstmtGetAllPaging == null)
+            {
+                return pstmtGetAllPaging = connection.prepareStatement(sqlGetAllPaging);
+            }
+            else
+            {
+                return pstmtGetAllPaging;
+            }
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }
+
+    private PreparedStatement getPstmtGetRecordsQuantity() throws DaoException
+    {
+        try
+        {
+            if(pstmtGetRecordsQuantity == null)
+            {
+                return pstmtGetRecordsQuantity = connection.prepareStatement(sqlGetRecordsQuantity);
+            }
+            else
+            {
+                return pstmtGetRecordsQuantity;
             }
         }
         catch(Exception e)
@@ -197,6 +240,41 @@ public class PersonDaoImpl implements PersonDao
     }
 
     @Override
+    public List<Person> getPersonAllPaging(Integer offset, Integer recordsQuantity) throws DaoException
+    {
+        List<Person> personList = new ArrayList<>();
+        try
+        {
+            pstmtGetAllPaging = getPstmtGetAllPaging();
+            pstmtGetAllPaging.setInt(1, offset);
+            pstmtGetAllPaging.setInt(2, recordsQuantity);
+            rs = pstmtGetAllPaging.executeQuery();
+            while(rs.next())
+            {
+                Person person = new Person();
+                person.setPersonId(rs.getInt(1));
+                person.setPersonName(rs.getString(2));
+                person.setPersonSurname(rs.getString(3));
+                person.setLogin(rs.getString(4));
+                person.setEmail(rs.getString(5));
+                person.setPhoneNumber(rs.getLong(6));
+                personList.add(person);
+            }
+            pstmtGetRecordsQuantity = getPstmtGetRecordsQuantity();
+            rs = pstmtGetRecordsQuantity.executeQuery();
+            if(rs.next())
+            {
+                this.recordsQuantity = rs.getInt(1);
+            }
+            return personList;
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public List<Person> getPersonAll() throws DaoException
     {
         List<Person> personList = new ArrayList<>();
@@ -221,6 +299,12 @@ public class PersonDaoImpl implements PersonDao
         {
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    public Integer getRecordsQuantity()
+    {
+        return recordsQuantity;
     }
 
     @Override

@@ -100,11 +100,11 @@ public class PersonController extends HttpServlet
             try
             {
                 PersonService personService = (PersonService) session.getAttribute("personService");
-                List<Person> personList = personService.getPersonAll();
+                List<Person> personList = personService.getPersonAllPaging(0, 4);
                 String sortValue = request.getParameter("sortValue");
                 if(sortValue != null && !sortValue.isEmpty())
                 {
-                    personList = personService.sortPerson(sortValue);
+                    personList = personService.sortPerson(personList, sortValue);
                 }
                 session.setAttribute("personList", personList);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/contactList.jsp");

@@ -111,12 +111,24 @@ public class PersonServiceImpl implements PersonService
     }
 
     @Override
+    public List<Person> getPersonAllPaging(Integer offset, Integer recordsQuantity) throws DaoException
+    {
+        return personDao.getPersonAllPaging(offset, recordsQuantity);
+    }
+
+    @Override
     public List<Person> getPersonAll() throws DaoException
     {
         return personDao.getPersonAll();
     }
 
     @Override
+    public Integer getRecordsQuantity()
+    {
+        return personDao.getRecordsQuantity();
+    }
+
+    /*@Override
     public List<Person> sortPerson(String sortValue) throws DaoException
     {
         List<Person> personList = personDao.getPersonAll();
@@ -195,6 +207,78 @@ public class PersonServiceImpl implements PersonService
 
         return null;
 
+    }*/
+
+    @Override
+    public List<Person> sortPerson(List<Person> personList, String sortValue) throws DaoException
+    {
+        if(sortValue != null)
+        {
+            switch(sortValue)
+            {
+                case "personId":
+                    Collections.sort(personList, new Comparator<Person>()
+                    {
+                        @Override
+                        public int compare(Person o1, Person o2)
+                        {
+                            return o1.getPersonId().compareTo(o2.getPersonId());
+                        }
+                    });
+                    return personList;
+                case "name":
+                    Collections.sort(personList, new Comparator<Person>()
+                    {
+                        @Override
+                        public int compare(Person o1, Person o2)
+                        {
+                            return o1.getPersonName().compareTo(o2.getPersonName());
+                        }
+                    });
+                    return personList;
+                case "surname":
+                    Collections.sort(personList, new Comparator<Person>()
+                    {
+                        @Override
+                        public int compare(Person o1, Person o2)
+                        {
+                            return o1.getPersonSurname().compareTo(o2.getPersonSurname());
+                        }
+                    });
+                    return personList;
+                case "login":
+                    Collections.sort(personList, new Comparator<Person>()
+                    {
+                        @Override
+                        public int compare(Person o1, Person o2)
+                        {
+                            return o1.getLogin().compareTo(o2.getLogin());
+                        }
+                    });
+                    return personList;
+                case "email":
+                    Collections.sort(personList, new Comparator<Person>()
+                    {
+                        @Override
+                        public int compare(Person o1, Person o2)
+                        {
+                            return o1.getEmail().compareTo(o2.getEmail());
+                        }
+                    });
+                    return personList;
+                case "phoneNumber":
+                    Collections.sort(personList, new Comparator<Person>()
+                    {
+                        @Override
+                        public int compare(Person o1, Person o2)
+                        {
+                            return o1.getPhoneNumber().compareTo(o2.getPhoneNumber());
+                        }
+                    });
+                    return personList;
+            }
+        }
+        return personList;
     }
 
     @Override
