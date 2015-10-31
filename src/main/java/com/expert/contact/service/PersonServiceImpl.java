@@ -117,6 +117,12 @@ public class PersonServiceImpl implements PersonService
     }
 
     @Override
+    public List<Person> getPersonAllPagingSort(String sortValue, Integer offset, Integer recordsQuantity) throws DaoException
+    {
+        return personDao.getPersonAllPagingSort(sortValue, offset, recordsQuantity);
+    }
+
+    @Override
     public List<Person> getPersonAll() throws DaoException
     {
         return personDao.getPersonAll();
@@ -209,7 +215,7 @@ public class PersonServiceImpl implements PersonService
 
     }*/
 
-    @Override
+    /*@Override
     public List<Person> sortPerson(List<Person> personList, String sortValue) throws DaoException
     {
         if(sortValue != null)
@@ -279,7 +285,7 @@ public class PersonServiceImpl implements PersonService
             }
         }
         return personList;
-    }
+    }*/
 
     @Override
     public void close() throws DaoException

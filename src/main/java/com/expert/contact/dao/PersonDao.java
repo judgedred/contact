@@ -10,8 +10,9 @@ public interface PersonDao
     public Person create(Person person) throws DaoException;
     public void update(Person person) throws DaoException;
     public List<Person> getPersonAllPaging(Integer offset, Integer records) throws DaoException;
+    public List<Person> getPersonAllPagingSort(String sortValue, Integer offset, Integer recordsQuantity) throws DaoException;
     public List<Person> getPersonAll() throws DaoException;
-    public Integer getRecordsQuantity();
+    public int getRecordsQuantity();
     public Person getPersonById(int id) throws DaoException;
     public void delete(Person person) throws DaoException;
     public void close() throws DaoException;

@@ -4,18 +4,18 @@
 <html>
 <head>
     <title>Contact List</title>
-    <script type="text/javascript" src="resources/js/jquery-2.1.4.js"></script>
+   <%-- <script type="text/javascript" src="resources/js/jquery-2.1.4.js"></script>
     <script type="text/javascript" src="resources/js/jquery-ui-1.11.4.js"></script>
     <script type="text/javascript" src="resources/js/paging.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#contact-table').paging({limit:5});
         });
-    </script>
+    </script>--%>
 </head>
 <body>
 <h2>Contact List</h2>
-<table border="1" id="contact-table">
+<table border="1" id="contact-table" cellpadding="5" cellspacing="5">
     <tr>
         <td><a href="contactList?sortValue=personId">ID</a></td>
         <td><a href="contactList?sortValue=name">Name</a></td>
@@ -42,6 +42,46 @@
     }
     }
 %>
+</table>
+
+<table border="1" cellpadding="5" cellspacing="5">
+    <tr>
+<%
+            int currentPage = (Integer)session.getAttribute("currentPage");
+            if(currentPage != 1)
+            {
+%>
+        <td><a href="contactList?page=<%=currentPage-1%>">Предыдущая</a> </td>
+        <%
+            }
+        %>
+<%
+            int pagesQuantity = (Integer)session.getAttribute("pagesQuantity");
+            for(int i = 1; i <= pagesQuantity; i++)
+            {
+                if(i != currentPage)
+                {
+%>
+                <td><a href="contactList?page=<%=i%>"><%=i%></a></td>
+<%
+                }
+                else
+                {
+%>
+                    <td><%=i%></td>
+<%
+                }
+            }
+%>
+
+<% if(currentPage < pagesQuantity)
+        {
+ %>
+            <td><a href="contactList?page=<%=currentPage+1%>">Следующая</a></td>
+<%
+        }
+%>
+    </tr>
 </table>
 </body>
 </html>

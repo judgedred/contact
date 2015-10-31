@@ -13,8 +13,9 @@ public interface PersonService
     public boolean importPerson(InputStream csvFileStream, String csvSplit) throws DaoException, IOException;
     public void update(Person person) throws DaoException;
     public List<Person> getPersonAllPaging(Integer offset, Integer recordsQuantity) throws DaoException;
+    public List<Person> getPersonAllPagingSort(String sortValue, Integer offset, Integer recordsQuantity) throws DaoException;
     public List<Person> getPersonAll() throws DaoException;
     public Integer getRecordsQuantity();
-    public List<Person> sortPerson(List<Person> personList, String sortValue) throws DaoException;
+//    public List<Person> sortPerson(List<Person> personList, String sortValue) throws DaoException;
     public void close() throws DaoException;
 }

@@ -16,16 +16,28 @@ public class PersonDaoImpl implements PersonDao
     private PreparedStatement pstmtUpdate = null;
     private PreparedStatement pstmtGetAll = null;
     private PreparedStatement pstmtGetAllPaging = null;
+    private PreparedStatement pstmtGetAllPagingOrderById = null;
+    private PreparedStatement pstmtGetAllPagingOrderByName = null;
+    private PreparedStatement pstmtGetAllPagingOrderBySurname = null;
+    private PreparedStatement pstmtGetAllPagingOrderByLogin = null;
+    private PreparedStatement pstmtGetAllPagingOrderByEmail = null;
+    private PreparedStatement pstmtGetAllPagingOrderByPhoneNumber = null;
     private PreparedStatement pstmtGetRecordsQuantity = null;
     private PreparedStatement pstmtLastId = null;
     private PreparedStatement pstmtGetById = null;
     private PreparedStatement pstmtDelete = null;
     private ResultSet rs = null;
-    private static Integer recordsQuantity;
+    private static int recordsQuantity;
     private static final String sqlCreate =	"Insert Into Person(person_name, person_surname, login, email, phone_number) Values(?, ?, ?, ?, ?)";
     private static final String sqlUpdate = "Update Person Set person_name = ?, person_surname = ?, login = ?, email = ?, phone_number = ? Where person_id = ?";
     private static final String sqlGetAll = "Select person_id, person_name, person_surname, login, email, phone_number From Person";
-    private static String sqlGetAllPaging = "Select SQL_CALC_FOUND_ROWS person_id, person_name, person_surname, login, email, phone_number From Person LIMIT ?, ?";
+    private static final String sqlGetAllPaging = "Select SQL_CALC_FOUND_ROWS person_id, person_name, person_surname, login, email, phone_number From Person LIMIT ?, ?";
+    private static final String sqlGetAllPagingOrderById = "Select SQL_CALC_FOUND_ROWS person_id, person_name, person_surname, login, email, phone_number From Person ORDER BY person_id LIMIT ?, ?";
+    private static final String sqlGetAllPagingOrderByName = "Select SQL_CALC_FOUND_ROWS person_id, person_name, person_surname, login, email, phone_number From Person ORDER BY person_name LIMIT ?, ?";
+    private static final String sqlGetAllPagingOrderBySurname = "Select SQL_CALC_FOUND_ROWS person_id, person_name, person_surname, login, email, phone_number From Person ORDER BY person_surname LIMIT ?, ?";
+    private static final String sqlGetAllPagingOrderByLogin = "Select SQL_CALC_FOUND_ROWS person_id, person_name, person_surname, login, email, phone_number From Person ORDER BY login LIMIT ?, ?";
+    private static final String sqlGetAllPagingOrderByEmail = "Select SQL_CALC_FOUND_ROWS person_id, person_name, person_surname, login, email, phone_number From Person ORDER BY email LIMIT ?, ?";
+    private static final String sqlGetAllPagingOrderByPhoneNumber = "Select SQL_CALC_FOUND_ROWS person_id, person_name, person_surname, login, email, phone_number From Person ORDER BY phone_number LIMIT ?, ?";
     private static final String sqlGetRecordsQuantity = "Select FOUND_ROWS()";
     private static final String sqlLastId = "Select person_id, person_name, person_surname, login, email, phone_number From Person Where person_id = last_insert_id()";
     private static final String sqlGetById = "Select person_id, person_name, person_surname, login, email, phone_number From Person Where person_id = ?";
@@ -99,6 +111,120 @@ public class PersonDaoImpl implements PersonDao
             else
             {
                 return pstmtGetAllPaging;
+            }
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }
+
+    private PreparedStatement getPstmtGetAllPagingOrderByName() throws DaoException
+    {
+        try
+        {
+            if(pstmtGetAllPagingOrderByName == null)
+            {
+                return pstmtGetAllPagingOrderByName = connection.prepareStatement(sqlGetAllPagingOrderByName);
+            }
+            else
+            {
+                return pstmtGetAllPagingOrderByName;
+            }
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }
+
+    private PreparedStatement getPstmtGetAllPagingOrderById() throws DaoException
+    {
+        try
+        {
+            if(pstmtGetAllPagingOrderById == null)
+            {
+                return pstmtGetAllPagingOrderById = connection.prepareStatement(sqlGetAllPagingOrderById);
+            }
+            else
+            {
+                return pstmtGetAllPagingOrderById;
+            }
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }
+
+    private PreparedStatement getPstmtGetAllPagingOrderBySurname() throws DaoException
+    {
+        try
+        {
+            if(pstmtGetAllPagingOrderBySurname == null)
+            {
+                return pstmtGetAllPagingOrderBySurname = connection.prepareStatement(sqlGetAllPagingOrderBySurname);
+            }
+            else
+            {
+                return pstmtGetAllPagingOrderBySurname;
+            }
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }
+
+    private PreparedStatement getPstmtGetAllPagingOrderByLogin() throws DaoException
+    {
+        try
+        {
+            if(pstmtGetAllPagingOrderByLogin == null)
+            {
+                return pstmtGetAllPagingOrderByLogin = connection.prepareStatement(sqlGetAllPagingOrderByLogin);
+            }
+            else
+            {
+                return pstmtGetAllPagingOrderByLogin;
+            }
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }
+
+    private PreparedStatement getPstmtGetAllPagingOrderByEmail() throws DaoException
+    {
+        try
+        {
+            if(pstmtGetAllPagingOrderByEmail == null)
+            {
+                return pstmtGetAllPagingOrderByEmail = connection.prepareStatement(sqlGetAllPagingOrderByEmail);
+            }
+            else
+            {
+                return pstmtGetAllPagingOrderByEmail;
+            }
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }
+
+    private PreparedStatement getPstmtGetAllPagingOrderByPhoneNumber() throws DaoException
+    {
+        try
+        {
+            if(pstmtGetAllPagingOrderByPhoneNumber == null)
+            {
+                return pstmtGetAllPagingOrderByPhoneNumber = connection.prepareStatement(sqlGetAllPagingOrderByPhoneNumber);
+            }
+            else
+            {
+                return pstmtGetAllPagingOrderByPhoneNumber;
             }
         }
         catch(Exception e)
@@ -275,6 +401,76 @@ public class PersonDaoImpl implements PersonDao
     }
 
     @Override
+    public List<Person> getPersonAllPagingSort(String sortValue, Integer offset, Integer recordsQuantity) throws DaoException
+    {
+        List<Person> personList = new ArrayList<>();
+        try
+        {
+            switch(sortValue)
+            {
+                case "personId":
+                    pstmtGetAllPagingOrderById = getPstmtGetAllPagingOrderById();
+                    pstmtGetAllPagingOrderById.setInt(1, offset);
+                    pstmtGetAllPagingOrderById.setInt(2, recordsQuantity);
+                    rs = pstmtGetAllPagingOrderById.executeQuery();
+                    break;
+                case "name":
+                    pstmtGetAllPagingOrderByName = getPstmtGetAllPagingOrderByName();
+                    pstmtGetAllPagingOrderByName.setInt(1, offset);
+                    pstmtGetAllPagingOrderByName.setInt(2, recordsQuantity);
+                    rs = pstmtGetAllPagingOrderByName.executeQuery();
+                    break;
+                case "surname":
+                    pstmtGetAllPagingOrderBySurname = getPstmtGetAllPagingOrderBySurname();
+                    pstmtGetAllPagingOrderBySurname.setInt(1, offset);
+                    pstmtGetAllPagingOrderBySurname.setInt(2, recordsQuantity);
+                    rs = pstmtGetAllPagingOrderBySurname.executeQuery();
+                    break;
+                case "login":
+                    pstmtGetAllPagingOrderByLogin = getPstmtGetAllPagingOrderByLogin();
+                    pstmtGetAllPagingOrderByLogin.setInt(1, offset);
+                    pstmtGetAllPagingOrderByLogin.setInt(2, recordsQuantity);
+                    rs = pstmtGetAllPagingOrderByLogin.executeQuery();
+                    break;
+                case "email":
+                    pstmtGetAllPagingOrderByEmail = getPstmtGetAllPagingOrderByEmail();
+                    pstmtGetAllPagingOrderByEmail.setInt(1, offset);
+                    pstmtGetAllPagingOrderByEmail.setInt(2, recordsQuantity);
+                    rs = pstmtGetAllPagingOrderByEmail.executeQuery();
+                    break;
+                case "phoneNumber":
+                    pstmtGetAllPagingOrderByPhoneNumber = getPstmtGetAllPagingOrderByPhoneNumber();
+                    pstmtGetAllPagingOrderByPhoneNumber.setInt(1, offset);
+                    pstmtGetAllPagingOrderByPhoneNumber.setInt(2, recordsQuantity);
+                    rs = pstmtGetAllPagingOrderByPhoneNumber.executeQuery();
+                    break;
+            }
+            while(rs.next())
+            {
+                Person person = new Person();
+                person.setPersonId(rs.getInt(1));
+                person.setPersonName(rs.getString(2));
+                person.setPersonSurname(rs.getString(3));
+                person.setLogin(rs.getString(4));
+                person.setEmail(rs.getString(5));
+                person.setPhoneNumber(rs.getLong(6));
+                personList.add(person);
+            }
+            pstmtGetRecordsQuantity = getPstmtGetRecordsQuantity();
+            rs = pstmtGetRecordsQuantity.executeQuery();
+            if(rs.next())
+            {
+                this.recordsQuantity = rs.getInt(1);
+            }
+            return personList;
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public List<Person> getPersonAll() throws DaoException
     {
         List<Person> personList = new ArrayList<>();
@@ -302,7 +498,7 @@ public class PersonDaoImpl implements PersonDao
     }
 
     @Override
-    public Integer getRecordsQuantity()
+    public int getRecordsQuantity()
     {
         return recordsQuantity;
     }

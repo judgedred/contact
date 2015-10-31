@@ -100,13 +100,32 @@ public class PersonController extends HttpServlet
             try
             {
                 PersonService personService = (PersonService) session.getAttribute("personService");
-                List<Person> personList = personService.getPersonAllPaging(0, 4);
+                int page = 1;
+                int recordsPerPage = 4;
+                if(request.getParameter("page") != null)
+                {
+                    page = Integer.parseInt(request.getParameter("page"));
+                }
+                List<Person> personList = null;
+                int recordsQuantity = personService.getRecordsQuantity();
+                int pagesQuantity = (int) Math.ceil(recordsQuantity*1.0/recordsPerPage);
                 String sortValue = request.getParameter("sortValue");
                 if(sortValue != null && !sortValue.isEmpty())
                 {
-                    personList = personService.sortPerson(personList, sortValue);
+                    session.setAttribute("sortValue", sortValue);
+                }
+                if(session.getAttribute("sortValue") != null)
+                {
+                    sortValue = (String)session.getAttribute("sortValue");
+                    personList = personService.getPersonAllPagingSort(sortValue, (page-1)*recordsPerPage, recordsPerPage);
+                }
+                else
+                {
+                    personList = personService.getPersonAllPaging((page-1)*recordsPerPage, recordsPerPage);
                 }
                 session.setAttribute("personList", personList);
+                session.setAttribute("pagesQuantity", pagesQuantity);
+                session.setAttribute("currentPage", page);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/contactList.jsp");
                 dispatcher.forward(request, response);
             }
