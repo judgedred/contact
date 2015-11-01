@@ -15,6 +15,7 @@
 </head>
 <body>
 <h2>Contact List</h2>
+<p><a href="main">На главную</a></p>
 <table border="1" id="contact-table" cellpadding="5" cellspacing="5">
     <tr>
         <td><a href="contactList?sortValue=personId">ID</a></td>

@@ -5,6 +5,7 @@
 </head>
 <body>
 <h2>Upload csv</h2>
+<p><a href="main">На главную</a></p>
 
 <form id="contact" name="contact" action="import" method="post" enctype="multipart/form-data">
     <p><select name="csv-split">

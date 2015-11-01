@@ -107,8 +107,6 @@ public class PersonController extends HttpServlet
                     page = Integer.parseInt(request.getParameter("page"));
                 }
                 List<Person> personList = null;
-                int recordsQuantity = personService.getRecordsQuantity();
-                int pagesQuantity = (int) Math.ceil(recordsQuantity*1.0/recordsPerPage);
                 String sortValue = request.getParameter("sortValue");
                 if(sortValue != null && !sortValue.isEmpty())
                 {
@@ -123,6 +121,8 @@ public class PersonController extends HttpServlet
                 {
                     personList = personService.getPersonAllPaging((page-1)*recordsPerPage, recordsPerPage);
                 }
+                int recordsQuantity = personService.getRecordsQuantity();
+                int pagesQuantity = (int) Math.ceil(recordsQuantity*1.0/recordsPerPage);
                 session.setAttribute("personList", personList);
                 session.setAttribute("pagesQuantity", pagesQuantity);
                 session.setAttribute("currentPage", page);
