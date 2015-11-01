@@ -3,11 +3,9 @@ import com.expert.contact.dao.DaoFactory;
 import com.expert.contact.dao.DaoFactoryImpl;
 import com.expert.contact.dao.PersonDao;
 import com.expert.contact.domain.Person;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

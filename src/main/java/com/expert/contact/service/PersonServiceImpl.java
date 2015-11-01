@@ -5,28 +5,14 @@ import com.expert.contact.dao.DaoFactory;
 import com.expert.contact.dao.DaoFactoryImpl;
 import com.expert.contact.dao.PersonDao;
 import com.expert.contact.domain.Person;
-
 import java.io.*;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 
 public class PersonServiceImpl implements PersonService
 {
-    private String importPath;
-    private BufferedReader br = null;
     private PersonDao personDao;
-
-    public String getImportPath()
-    {
-        return importPath;
-    }
-
-    public void setImportPath(String importPath)
-    {
-        this.importPath = importPath;
-    }
+    BufferedReader br = null;
 
     @Override
     public boolean importPerson(InputStream csvFileStream, String csvSplit) throws DaoException, IOException
@@ -34,8 +20,7 @@ public class PersonServiceImpl implements PersonService
         try
         {
             String line = "";
-//            String csvSplit = ",";
-            BufferedReader br = new BufferedReader(new InputStreamReader(csvFileStream, "UTF8"));
+            br = new BufferedReader(new InputStreamReader(csvFileStream, "UTF8"));
             List<Person> personList = personDao.getPersonAll();
             int i = 1;
             while((line = br.readLine()) != null)
@@ -59,12 +44,10 @@ public class PersonServiceImpl implements PersonService
                 }
                 if(personIsNew)
                 {
-//                    personDao.create(person);
                     personDao.createAddBatch(person);
                 }
                 else
                 {
-//                    personDao.update(person);
                     personDao.updateAddBatch(person);
                 }
                 if(i == 1000)
@@ -92,34 +75,6 @@ public class PersonServiceImpl implements PersonService
 
     }
 
-    /*@Override
-    public void importPerson(InputStream csvFileStream) throws DaoException, IOException
-    {
-        try
-        {
-            BufferedInputStream in = new BufferedInputStream(csvFileStream);
-            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("d://1/test"));
-            byte[] buff = new byte[1000];
-            int i;
-            while((i = in.read(buff)) != -1)
-            {
-                out.write(buff, 0, i);
-            }
-            in.close();
-            out.close();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }*/
-
-    @Override
-    public void update(Person person) throws DaoException
-    {
-
-    }
-
     @Override
     public List<Person> getPersonAllPaging(Integer offset, Integer recordsQuantity) throws DaoException
     {
@@ -143,159 +98,6 @@ public class PersonServiceImpl implements PersonService
     {
         return personDao.getRecordsQuantity();
     }
-
-    /*@Override
-    public List<Person> sortPerson(String sortValue) throws DaoException
-    {
-        List<Person> personList = personDao.getPersonAll();
-        if(sortValue != null && sortValue.equals("personId"))
-        {
-            Collections.sort(personList, new Comparator<Person>()
-            {
-                @Override
-                public int compare(Person o1, Person o2)
-                {
-                    return o1.getPersonId().compareTo(o2.getPersonId());
-                }
-            });
-            return personList;
-        }
-        if(sortValue != null && sortValue.equals("name"))
-        {
-            Collections.sort(personList, new Comparator<Person>()
-            {
-                @Override
-                public int compare(Person o1, Person o2)
-                {
-                    return o1.getPersonName().compareTo(o2.getPersonName());
-                }
-            });
-            return personList;
-        }
-        if(sortValue != null && sortValue.equals("surname"))
-        {
-            Collections.sort(personList, new Comparator<Person>()
-            {
-                @Override
-                public int compare(Person o1, Person o2)
-                {
-                    return o1.getPersonSurname().compareTo(o2.getPersonSurname());
-                }
-            });
-            return personList;
-        }
-        if(sortValue != null && sortValue.equals("login"))
-        {
-            Collections.sort(personList, new Comparator<Person>()
-            {
-                @Override
-                public int compare(Person o1, Person o2)
-                {
-                    return o1.getLogin().compareTo(o2.getLogin());
-                }
-            });
-            return personList;
-        }
-        if(sortValue != null && sortValue.equals("email"))
-        {
-            Collections.sort(personList, new Comparator<Person>()
-            {
-                @Override
-                public int compare(Person o1, Person o2)
-                {
-                    return o1.getEmail().compareTo(o2.getEmail());
-                }
-            });
-            return personList;
-        }
-        if(sortValue != null && sortValue.equals("phoneNumber"))
-        {
-            Collections.sort(personList, new Comparator<Person>()
-            {
-                @Override
-                public int compare(Person o1, Person o2)
-                {
-                    return o1.getPhoneNumber().compareTo(o2.getPhoneNumber());
-                }
-            });
-            return personList;
-        }
-
-        return null;
-
-    }*/
-
-    /*@Override
-    public List<Person> sortPerson(List<Person> personList, String sortValue) throws DaoException
-    {
-        if(sortValue != null)
-        {
-            switch(sortValue)
-            {
-                case "personId":
-                    Collections.sort(personList, new Comparator<Person>()
-                    {
-                        @Override
-                        public int compare(Person o1, Person o2)
-                        {
-                            return o1.getPersonId().compareTo(o2.getPersonId());
-                        }
-                    });
-                    return personList;
-                case "name":
-                    Collections.sort(personList, new Comparator<Person>()
-                    {
-                        @Override
-                        public int compare(Person o1, Person o2)
-                        {
-                            return o1.getPersonName().compareTo(o2.getPersonName());
-                        }
-                    });
-                    return personList;
-                case "surname":
-                    Collections.sort(personList, new Comparator<Person>()
-                    {
-                        @Override
-                        public int compare(Person o1, Person o2)
-                        {
-                            return o1.getPersonSurname().compareTo(o2.getPersonSurname());
-                        }
-                    });
-                    return personList;
-                case "login":
-                    Collections.sort(personList, new Comparator<Person>()
-                    {
-                        @Override
-                        public int compare(Person o1, Person o2)
-                        {
-                            return o1.getLogin().compareTo(o2.getLogin());
-                        }
-                    });
-                    return personList;
-                case "email":
-                    Collections.sort(personList, new Comparator<Person>()
-                    {
-                        @Override
-                        public int compare(Person o1, Person o2)
-                        {
-                            return o1.getEmail().compareTo(o2.getEmail());
-                        }
-                    });
-                    return personList;
-                case "phoneNumber":
-                    Collections.sort(personList, new Comparator<Person>()
-                    {
-                        @Override
-                        public int compare(Person o1, Person o2)
-                        {
-                            return o1.getPhoneNumber().compareTo(o2.getPhoneNumber());
-                        }
-                    });
-                    return personList;
-            }
-        }
-        return personList;
-    }*/
 
     @Override
     public void close() throws DaoException

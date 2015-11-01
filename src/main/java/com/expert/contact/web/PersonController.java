@@ -1,14 +1,12 @@
 package com.expert.contact.web;
 
 
-import com.expert.contact.dao.DaoException;
 import com.expert.contact.domain.Person;
 import com.expert.contact.service.PersonService;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
+
 
 public class PersonController extends HttpServlet
 {
@@ -46,7 +44,6 @@ public class PersonController extends HttpServlet
                 {
                     if(uploadInProgress == null)
                     {
-//                    out.println("You are trying to upload<br/>");
                         boolean uploadSuccess = true;
                         String csvSplit = request.getParameter("csv-split");
                         FileItemFactory factory = new DiskFileItemFactory();
@@ -80,10 +77,6 @@ public class PersonController extends HttpServlet
                         return;
                     }
                 }
-                /*else
-                {
-                    out.println("You are not trying to upload<br/>");
-                }*/
                 RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/import.jsp");
                 dispatcher.forward(request, response);
             }
@@ -119,7 +112,7 @@ public class PersonController extends HttpServlet
                 {
                     page = Integer.parseInt(request.getParameter("page"));
                 }
-                List<Person> personList = null;
+                List<Person> personList;
                 String sortValue = request.getParameter("sortValue");
                 if(sortValue != null && !sortValue.isEmpty())
                 {
@@ -145,8 +138,8 @@ public class PersonController extends HttpServlet
             catch(Exception e)
             {
                 e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
-
         }
     }
 

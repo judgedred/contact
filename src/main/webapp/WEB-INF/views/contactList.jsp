@@ -4,14 +4,6 @@
 <html>
 <head>
     <title>Contact List</title>
-   <%-- <script type="text/javascript" src="resources/js/jquery-2.1.4.js"></script>
-    <script type="text/javascript" src="resources/js/jquery-ui-1.11.4.js"></script>
-    <script type="text/javascript" src="resources/js/paging.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('#contact-table').paging({limit:5});
-        });
-    </script>--%>
 </head>
 <body>
 <h2>Contact List</h2>

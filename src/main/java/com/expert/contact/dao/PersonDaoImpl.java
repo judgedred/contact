@@ -1,7 +1,6 @@
 package com.expert.contact.dao;
 
 import com.expert.contact.domain.Person;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -309,42 +308,6 @@ public class PersonDaoImpl implements PersonDao
         }
     }
 
-
-   /* @Override
-    public Person create(Person person) throws DaoException
-    {
-        try
-        {
-            pstmtCreate = getPstmtCreate();
-            pstmtCreate.setString(1, person.getPersonName());
-            pstmtCreate.setString(2, person.getPersonSurname());
-            pstmtCreate.setString(3, person.getLogin());
-            pstmtCreate.setString(4, person.getEmail());
-            pstmtCreate.setLong(5, person.getPhoneNumber());
-            pstmtCreate.executeUpdate();
-            pstmtLastId = getPstmtLastId();
-            rs = pstmtLastId.executeQuery();
-            if(rs.next())
-            {
-                person.setPersonId(rs.getInt(1));
-                person.setPersonName(rs.getString(2));
-                person.setPersonSurname(rs.getString(3));
-                person.setLogin(rs.getString(4));
-                person.setEmail(rs.getString(5));
-                person.setPhoneNumber(rs.getLong(6));
-                return person;
-            }
-            else
-            {
-                return null;
-            }
-        }
-        catch(Exception e)
-        {
-            throw new DaoException(e);
-        }
-    }*/
-
     @Override
     public void createAddBatch(Person person) throws DaoException
     {
@@ -357,6 +320,26 @@ public class PersonDaoImpl implements PersonDao
             pstmtCreate.setString(4, person.getEmail());
             pstmtCreate.setLong(5, person.getPhoneNumber());
             pstmtCreate.addBatch();
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public void updateAddBatch(Person person) throws DaoException
+    {
+        try
+        {
+            pstmtUpdate = getPstmtUpdate();
+            pstmtUpdate.setString(1, person.getPersonName());
+            pstmtUpdate.setString(2, person.getPersonSurname());
+            pstmtUpdate.setString(3, person.getLogin());
+            pstmtUpdate.setString(4, person.getEmail());
+            pstmtUpdate.setLong(5, person.getPhoneNumber());
+            pstmtUpdate.setInt(6, person.getPersonId());
+            pstmtUpdate.addBatch();
         }
         catch(Exception e)
         {
@@ -391,46 +374,6 @@ public class PersonDaoImpl implements PersonDao
                 }
             }
             return null;
-        }
-        catch(Exception e)
-        {
-            throw new DaoException(e);
-        }
-    }
-
-    /*@Override
-    public void update(Person person) throws DaoException
-    {
-        try
-        {
-            pstmtUpdate = getPstmtUpdate();
-            pstmtUpdate.setString(1, person.getPersonName());
-            pstmtUpdate.setString(2, person.getPersonSurname());
-            pstmtUpdate.setString(3, person.getLogin());
-            pstmtUpdate.setString(4, person.getEmail());
-            pstmtUpdate.setLong(5, person.getPhoneNumber());
-            pstmtUpdate.setInt(6, person.getPersonId());
-            pstmtUpdate.executeUpdate();
-        }
-        catch(Exception e)
-        {
-            throw new DaoException(e);
-        }
-    }*/
-
-    @Override
-    public void updateAddBatch(Person person) throws DaoException
-    {
-        try
-        {
-            pstmtUpdate = getPstmtUpdate();
-            pstmtUpdate.setString(1, person.getPersonName());
-            pstmtUpdate.setString(2, person.getPersonSurname());
-            pstmtUpdate.setString(3, person.getLogin());
-            pstmtUpdate.setString(4, person.getEmail());
-            pstmtUpdate.setLong(5, person.getPhoneNumber());
-            pstmtUpdate.setInt(6, person.getPersonId());
-            pstmtUpdate.addBatch();
         }
         catch(Exception e)
         {
@@ -649,6 +592,38 @@ public class PersonDaoImpl implements PersonDao
             if(pstmtLastId != null)
             {
                 pstmtLastId.close();
+            }
+            if(pstmtGetAllPaging != null)
+            {
+                pstmtGetAllPaging.close();
+            }
+            if(pstmtGetAllPagingOrderById != null)
+            {
+                pstmtGetAllPagingOrderById.close();
+            }
+            if(pstmtGetAllPagingOrderByName != null)
+            {
+                pstmtGetAllPagingOrderByName.close();
+            }
+            if(pstmtGetAllPagingOrderBySurname != null)
+            {
+                pstmtGetAllPagingOrderBySurname.close();
+            }
+            if(pstmtGetAllPagingOrderByLogin != null)
+            {
+                pstmtGetAllPagingOrderByLogin.close();
+            }
+            if(pstmtGetAllPagingOrderByEmail != null)
+            {
+                pstmtGetAllPagingOrderByEmail.close();
+            }
+            if(pstmtGetAllPagingOrderByPhoneNumber != null)
+            {
+                pstmtGetAllPagingOrderByPhoneNumber.close();
+            }
+            if(pstmtGetRecordsQuantity != null)
+            {
+                pstmtGetRecordsQuantity.close();
             }
             connection.close();
         }
