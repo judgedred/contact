@@ -101,7 +101,20 @@ public class PersonController extends HttpServlet
             {
                 PersonService personService = (PersonService) session.getAttribute("personService");
                 int page = 1;
-                int recordsPerPage = 4;
+                int recordsPerPage;
+                if(request.getParameter("recordsPerPage") != null)
+                {
+                    recordsPerPage = Integer.parseInt(request.getParameter("recordsPerPage"));
+                    session.setAttribute("recordsPerPage", recordsPerPage);
+                }
+                if(session.getAttribute("recordsPerPage") != null)
+                {
+                    recordsPerPage = (Integer)session.getAttribute("recordsPerPage");
+                }
+                else
+                {
+                    recordsPerPage = 4;
+                }
                 if(request.getParameter("page") != null)
                 {
                     page = Integer.parseInt(request.getParameter("page"));

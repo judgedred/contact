@@ -84,5 +84,6 @@
 %>
     </tr>
 </table>
+<p>Отображать по:<a href="contactList?recordsPerPage=5">5</a> <a href="contactList?recordsPerPage=10">10</a> </p>
 </body>
 </html>

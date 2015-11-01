@@ -39,7 +39,8 @@ public class PersonDaoTest
         String loginExpected = person.getLogin();
         String emailExpected = person.getEmail();
         Long phoneNumberExpected = person.getPhoneNumber();
-        Person personTest = personDao.create(person);
+        personDao.createAddBatch(person);
+        Person personTest = personDao.runBatch();
         Assert.assertNotNull(personTest);
         String personNameResult = personTest.getPersonName();
         String personSurnameResult = personTest.getPersonSurname();
@@ -70,7 +71,8 @@ public class PersonDaoTest
         String loginExpected = person.getLogin();
         String emailExpected = person.getEmail();
         Long phoneNumberExpected = person.getPhoneNumber();
-        personDao.update(person);
+        personDao.updateAddBatch(person);
+        personDao.runBatch();
         Person personTest = personDao.getPersonById(person.getPersonId());
         Assert.assertNotNull(personTest);
         String personNameResult = personTest.getPersonName();

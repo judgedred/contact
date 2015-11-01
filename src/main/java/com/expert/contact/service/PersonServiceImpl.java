@@ -36,10 +36,11 @@ public class PersonServiceImpl implements PersonService
             String line = "";
 //            String csvSplit = ",";
             BufferedReader br = new BufferedReader(new InputStreamReader(csvFileStream, "UTF8"));
+            List<Person> personList = personDao.getPersonAll();
+            int i = 1;
             while((line = br.readLine()) != null)
             {
                 boolean personIsNew = true;
-                List<Person> personList = personDao.getPersonAll();
                 String[] contact = line.split(csvSplit);
                 Person person = new Person();
                 person.setPersonName(contact[0]);
@@ -58,13 +59,22 @@ public class PersonServiceImpl implements PersonService
                 }
                 if(personIsNew)
                 {
-                    personDao.create(person);
+//                    personDao.create(person);
+                    personDao.createAddBatch(person);
                 }
                 else
                 {
-                    personDao.update(person);
+//                    personDao.update(person);
+                    personDao.updateAddBatch(person);
                 }
+                if(i == 1000)
+                {
+                    personDao.runBatch();
+                    i = 0;
+                }
+                i++;
             }
+            personDao.runBatch();
             return true;
         }
         catch(Exception e)

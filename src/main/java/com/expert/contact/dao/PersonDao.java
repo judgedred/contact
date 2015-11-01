@@ -7,8 +7,12 @@ import java.util.List;
 
 public interface PersonDao
 {
-    public Person create(Person person) throws DaoException;
-    public void update(Person person) throws DaoException;
+//    public Person create(Person person) throws DaoException;
+    public Person runBatch() throws DaoException;
+    public void createAddBatch(Person person) throws DaoException;
+//    public void update(Person person) throws DaoException;
+//    public void update() throws DaoException;
+    public void updateAddBatch(Person person) throws DaoException;
     public List<Person> getPersonAllPaging(Integer offset, Integer records) throws DaoException;
     public List<Person> getPersonAllPagingSort(String sortValue, Integer offset, Integer recordsQuantity) throws DaoException;
     public List<Person> getPersonAll() throws DaoException;

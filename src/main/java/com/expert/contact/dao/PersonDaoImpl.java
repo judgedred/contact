@@ -310,7 +310,7 @@ public class PersonDaoImpl implements PersonDao
     }
 
 
-    @Override
+   /* @Override
     public Person create(Person person) throws DaoException
     {
         try
@@ -343,9 +343,62 @@ public class PersonDaoImpl implements PersonDao
         {
             throw new DaoException(e);
         }
+    }*/
+
+    @Override
+    public void createAddBatch(Person person) throws DaoException
+    {
+        try
+        {
+            pstmtCreate = getPstmtCreate();
+            pstmtCreate.setString(1, person.getPersonName());
+            pstmtCreate.setString(2, person.getPersonSurname());
+            pstmtCreate.setString(3, person.getLogin());
+            pstmtCreate.setString(4, person.getEmail());
+            pstmtCreate.setLong(5, person.getPhoneNumber());
+            pstmtCreate.addBatch();
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
     }
 
     @Override
+    public Person runBatch() throws DaoException
+    {
+        try
+        {
+            if(pstmtUpdate != null)
+            {
+                pstmtUpdate.executeBatch();
+            }
+            if(pstmtCreate != null)
+            {
+                pstmtCreate.executeBatch();
+                pstmtLastId = getPstmtLastId();
+                rs = pstmtLastId.executeQuery();
+                if(rs.next())
+                {
+                    Person person = new Person();
+                    person.setPersonId(rs.getInt(1));
+                    person.setPersonName(rs.getString(2));
+                    person.setPersonSurname(rs.getString(3));
+                    person.setLogin(rs.getString(4));
+                    person.setEmail(rs.getString(5));
+                    person.setPhoneNumber(rs.getLong(6));
+                    return person;
+                }
+            }
+            return null;
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }
+
+    /*@Override
     public void update(Person person) throws DaoException
     {
         try
@@ -358,6 +411,26 @@ public class PersonDaoImpl implements PersonDao
             pstmtUpdate.setLong(5, person.getPhoneNumber());
             pstmtUpdate.setInt(6, person.getPersonId());
             pstmtUpdate.executeUpdate();
+        }
+        catch(Exception e)
+        {
+            throw new DaoException(e);
+        }
+    }*/
+
+    @Override
+    public void updateAddBatch(Person person) throws DaoException
+    {
+        try
+        {
+            pstmtUpdate = getPstmtUpdate();
+            pstmtUpdate.setString(1, person.getPersonName());
+            pstmtUpdate.setString(2, person.getPersonSurname());
+            pstmtUpdate.setString(3, person.getLogin());
+            pstmtUpdate.setString(4, person.getEmail());
+            pstmtUpdate.setLong(5, person.getPhoneNumber());
+            pstmtUpdate.setInt(6, person.getPersonId());
+            pstmtUpdate.addBatch();
         }
         catch(Exception e)
         {
